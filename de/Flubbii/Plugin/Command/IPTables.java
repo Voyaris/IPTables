@@ -6,9 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import de.Flubbii.Plugin.Main.Main;
 import de.Flubbii.Plugin.Utils.Messages;
 
 public class IPTables implements CommandExecutor {
@@ -27,7 +25,6 @@ public class IPTables implements CommandExecutor {
 								e.printStackTrace();
 							}
 							p.sendMessage(Messages.getMessage("IP-Blocked").replace("%Prefix%", Messages.getMessage("Prefix")));
-							start(IP);
 						} else if (args[0].equalsIgnoreCase("remove")) {
 							try {
 								Runtime.getRuntime().exec("iptables -D INPUT -s " + IP + " -j DROP");
@@ -96,18 +93,5 @@ public class IPTables implements CommandExecutor {
 	private String getPoints(String IP) {
 		return IP.replace("0", "").replace("1", "").replace("2", "").replace("3", "").replace("4", "").replace("5", "")
 				.replace("6", "").replace("7", "").replace("8", "").replace("9", "");
-	}
-
-	private void start(String IP) {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				try {
-					Runtime.getRuntime().exec("iptables -D INPUT -s " + IP + " -j DROP");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}.runTaskLaterAsynchronously(Main.getInstance(), 20 * 10);
 	}
 }
